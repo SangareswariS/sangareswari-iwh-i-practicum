@@ -1,0 +1,33 @@
+doctype html
+html
+  head
+    title Pets CRM
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet", href="/css/style.css") 
+  body
+    h1 🐾 Pets in HubSpot CRM
+    table
+      thead
+        tr
+          th S.No
+          th Name
+          th Type
+          th Bio
+          th Action
+      tbody
+        each pet, index in pets
+          tr
+            td #{index + 1}
+            td= pet.name
+            td= pet.type
+            td= pet.bio
+            td 
+              a.update-link(href=`/edit-cobj/${pet.id}`) Edit
+
+    .form-container
+      h2 Add a New Pet
+      form(action="/add-cobj" method="post")
+        input(type="text" name="pet_name" placeholder="Name" required)
+        input(type="text" name="pet_type" placeholder="Type")
+        textarea(name="pet_bio" placeholder="Bio")
+        button(type="submit") Add Pet
