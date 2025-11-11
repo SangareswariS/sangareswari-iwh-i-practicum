@@ -44,7 +44,23 @@ async function getAllPets() {
   }
 }
 
+// Create a new pet record
+async function createPet(pet) {
+  try {
+    await axios.post(
+      `${BASE_URL}/crm/v3/objects/${HUBSPOT_CUSTOM_OBJECT_TYPE}`,
+      { properties: pet },
+      { headers }
+    );
+    console.log('Pet created successfully');
+  } catch (error) {
+    console.error('Error creating pet:', error.response?.data || error.message);
+    throw error;
+  }
+}
+
 
 module.exports = {
-  getAllPets  
+  getAllPets ,
+  createPet 
 };

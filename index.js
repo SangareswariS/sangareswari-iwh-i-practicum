@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const { getAllPets } = require('./utils/hubspot');
+const { getAllPets, createPet } = require('./utils/hubspot');
 
 const axios = require('axios');
 const app = express();
@@ -26,6 +26,20 @@ app.get('/', async (req, res) => {
   } catch (err) {
     console.error('Error fetching pets:', err);
     res.status(500).send('Error fetching pets');
+  }
+});
+
+/* ==============================
+   TODO: ROUTE 2 - Add New Pet
+   ============================== */
+app.post('/add-cobj', async (req, res) => {
+  const { pet_name, pet_type, pet_bio } = req.body;
+  try {
+    await createPet({ pet_name, pet_type, pet_bio });
+    res.redirect('/');
+  } catch (err) {
+    console.error('Error adding pet:', err);
+    res.status(500).send('Error adding pet');
   }
 });
 
