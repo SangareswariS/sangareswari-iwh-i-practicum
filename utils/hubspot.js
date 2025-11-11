@@ -60,7 +60,44 @@ async function createPet(pet) {
 }
 
 
+// Fetch a single pet by ID
+async function getPetById(id) {
+  try {
+    const res = await axios.get(
+      `${BASE_URL}/crm/v3/objects/${HUBSPOT_CUSTOM_OBJECT_TYPE}/${id}`,
+      {
+        headers,
+        params: {
+          properties: 'pet_name,pet_type,pet_bio',
+        },
+      }
+    );
+    return res.data.properties;
+  } catch (error) {
+    console.error('Error fetching pet by ID:', error.response?.data || error.message);
+    throw error;
+  }
+}
+
+// Update an existing pet record
+async function updatePet(id, pet) {
+  try {
+    await axios.patch(
+      `${BASE_URL}/crm/v3/objects/${HUBSPOT_CUSTOM_OBJECT_TYPE}/${id}`,
+      { properties: pet },
+      { headers }
+    );
+    console.log(`Pet (${id}) updated successfully`);
+  } catch (error) {
+    console.error('Error updating pet:', error.response?.data || error.message);
+    throw error;
+  }
+}
+
+
 module.exports = {
   getAllPets ,
-  createPet 
+  createPet,
+  getPetById,
+  updatePet,
 };

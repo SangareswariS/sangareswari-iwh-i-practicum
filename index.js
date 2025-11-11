@@ -1,7 +1,7 @@
 require('dotenv').config();
 const express = require('express');
 const path = require('path');
-const { getAllPets, createPet } = require('./utils/hubspot');
+const { getAllPets, createPet, updatePet, getPetById } = require('./utils/hubspot');
 
 const axios = require('axios');
 const app = express();
@@ -40,6 +40,39 @@ app.post('/add-cobj', async (req, res) => {
   } catch (err) {
     console.error('Error adding pet:', err);
     res.status(500).send('Error adding pet');
+  }
+});
+
+
+/* ==============================
+   TODO: ROUTE 3 - Update Page - Edit Pet 
+   ============================== */
+app.get('/edit-cobj/:id', async (req, res) => {
+  const petId = req.params.id;
+
+  try {
+    const pet = await getPetById(petId);
+    if (!pet) return res.status(404).send('Pet not found');
+
+    res.render('edit', { petId, pet });
+  } catch (err) {
+    console.error('Error loading pet for edit:', err);
+    res.status(500).send('Error loading edit form');
+  }
+});
+
+/* ==============================
+   Update Pet Details
+   ============================== */
+app.post('/update-cobj', async (req, res) => {
+  const { id, pet_name, pet_type, pet_bio } = req.body;
+
+  try {
+    await updatePet(id, { pet_name, pet_type, pet_bio });
+    res.redirect('/');
+  } catch (err) {
+    console.error('Error updating pet:', err.response?.data || err.message);
+    res.status(500).send('Error updating pet');
   }
 });
 

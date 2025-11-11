@@ -1,0 +1,16 @@
+doctype html
+html
+  head
+    title Edit Pet
+    meta(name="viewport" content="width=device-width, initial-scale=1")
+    link(rel="stylesheet", href="/css/style.css")
+  body
+    .edit-container
+      h2 Edit Pet Details
+      form(action="/update-cobj" method="post")
+        input(type="hidden" name="id" value=petId)
+        input(type="text" name="pet_name" placeholder="Name" required value=pet.pet_name)
+        input(type="text" name="pet_type" placeholder="Type" value=pet.pet_type)
+        textarea(name="pet_bio" placeholder="Bio")= pet.pet_bio
+        button(type="submit") Update Pet
+      a.back-link(href="/") ← Back to Pets List
